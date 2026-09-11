@@ -7,9 +7,10 @@
     
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="A brief description of your website goes here">
+    <meta name="description" content="@yield('meta_description', 'A brief description of your website goes here')">
     <meta name="keywords" content="Business, Brokers, Infinity Business Brokers">
     <title>@yield('title') </title>
+    @stack('meta')
     @include('front.layouts.partials.css-links')
     <link rel="icon" type="image/png" sizes="16x16" href="{{url('/theme')}}/assets/images/ibb.png">
 </head>
@@ -72,7 +73,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('blog') ? 'active' : '' }}" href="{{ route('blog') }}">Blog</a>
+                            <a class="nav-link {{ request()->routeIs('blog') ? 'active' : '' }}" href="{{ route('blog') }}">Articles</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('contactus') ? 'active' : '' }}" href="{{ route('contactus') }}">Contact us</a>
@@ -170,13 +171,13 @@
                             @foreach ($latestBlogs as $blog)
                             <div class="row fposts-grid-inner mb-4">
                                 <div class="col-4 fposts-grid-left ps-0">
-                                    <a href="{{ route('blog-single', $blog->id) }}">
+                                    <a href="{{ route('blog-single', $blog->slug) }}">
                                         <img  src="{{$blog->banner}}" class="img-fluid radius-image">
                                     </a>
                                 </div>
                                 <div class="col-8 fposts-grid-right">
                                     <h4>
-                                        <a href="{{ route('blog-single', $blog->id) }}" class="text-bl text-left">{{ $blog->title }}</a>
+                                        <a href="{{ route('blog-single', $blog->slug) }}" class="text-bl text-left">{{ $blog->title }}</a>
                                     </h4>
                                     <p class="time">{{ $blog->created_at->diffForHumans() }}</p>
                                 </div>

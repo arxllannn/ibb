@@ -42,6 +42,15 @@
                             </div>
                         </div>
 
+                        <!-- URL Slug -->
+                        <div class="form-group row">
+                            <label class="col-sm-1 control-label col-form-label">URL Slug</label>
+                            <div class="col-sm-11">
+                                <input type="text" class="form-control" name="slug" value="{{ old('slug', $blog->slug) }}" placeholder="Leave blank to auto-generate from the title">
+                                <small class="form-text text-muted">Used in the article's web address, e.g. /blog-single/your-slug-here. Changing this changes the live article URL.</small>
+                            </div>
+                        </div>
+
                         <!-- Blog Category -->
                         <div class="form-group row">
                             <label class="col-sm-1 control-label col-form-label required">Category</label>

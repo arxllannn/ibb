@@ -1,5 +1,21 @@
 @extends('front.app')
-@section('title') Infinity Business Brokers | Home @endsection
+@php
+    $metaDescription = trim(substr(strip_tags((string) $blog->content), 0, 160));
+    $metaImage = !empty($blog->banner) ? $blog->banner : asset('theme/assets/images/ibb.png');
+@endphp
+@section('title') {{ $blog->title }} | Infinity Business Brokers @endsection
+@section('meta_description') {{ $metaDescription }} @endsection
+@push('meta')
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ $blog->title }}">
+    <meta property="og:description" content="{{ $metaDescription }}">
+    <meta property="og:url" content="{{ route('blog-single', $blog->slug) }}">
+    <meta property="og:image" content="{{ $metaImage }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $blog->title }}">
+    <meta name="twitter:description" content="{{ $metaDescription }}">
+    <meta name="twitter:image" content="{{ $metaImage }}">
+@endpush
 @section('content')
  <!--/inner-page-->
  <!--/inner-page-->
@@ -9,7 +25,7 @@
                 <div class="w3breadcrumb-gids">
                     <div class="w3breadcrumb-left text-left">
                         <h2 class="inner-w3-title mt-sm-5 mt-4">
-                            Blog </h2>
+                            Articles </h2>
 
                     </div>
                     <div class="w3breadcrumb-right">
@@ -62,8 +78,18 @@
                                         <h4 class="side-title mr-sm-4 mr-2">Share this post :</h4>
                                     </li>
                                     <li>
-                                        <a href="https://web.facebook.com/people/Infinity-Business-Brokers/100057664291082/?_rdc=1&_rdr#" class="facebook" title="Facebook" target="_blank" rel="noopener">
+                                        <a href="https://www.facebook.com/profile.php?id=100057664291082" class="facebook" title="Facebook" target="_blank" rel="noopener">
                                             <span class="fab fa-facebook-f" aria-hidden="true"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://x.com/ibb_business" class="twitter" title="X" target="_blank" rel="noopener">
+                                            <span class="fa-brands fa-x-twitter" aria-hidden="true"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.instagram.com/ibb_businessbrokers/" class="instagram" title="Instagram" target="_blank" rel="noopener">
+                                            <span class="fab fa-instagram" aria-hidden="true"></span>
                                         </a>
                                     </li>
                                 </ul>
@@ -71,9 +97,9 @@
                         </div>
                         <div class="new-posts clearfix">
                         @if($prevBlog)
-                            <a class="prev-post pull-left" href="{{route('blog-single',$prevBlog)}}"><span class="fa fa-arrow-left me-2" aria-hidden="true"></span>
+                            <a class="prev-post pull-left" href="{{route('blog-single',$prevBlog->slug)}}"><span class="fa fa-arrow-left me-2" aria-hidden="true"></span>
                                 Previous Post</a>@endif
-                                @if($nextBlog) <a class="next-post pull-right" href="{{route('blog-single',$nextBlog)}}">Next Post <span class="fa fa-arrow-right ms-2" aria-hidden="true"></span></a>@endif
+                                @if($nextBlog) <a class="next-post pull-right" href="{{route('blog-single',$nextBlog->slug)}}">Next Post <span class="fa fa-arrow-right ms-2" aria-hidden="true"></span></a>@endif
                         </div>
                         <!-- <div class="comments mt-5">
                             <h3 class="post-content-title">Comments</h3>
@@ -177,13 +203,13 @@
                                 @foreach($recentBlogs as $recent)
                                 <div class="posts-grid-inner">
                                     <div class="posts-grid-left ps-0">
-                                        <a href="{{route('blog-single',$recent->id)}}">
+                                        <a href="{{route('blog-single',$recent->slug)}}">
                                             <img src="{{$recent->banner}}" alt=" " class="img-fluid">
                                         </a>
                                     </div>
                                     <div class="posts-grid-right">
                                         <h4>
-                                            <a href="{{route('blog-single',$recent->id)}}" class="text-bl">{{$recent->title}}</a>
+                                            <a href="{{route('blog-single',$recent->slug)}}" class="text-bl">{{$recent->title}}</a>
                                         </h4>
                                         <span class="price">{{$recent->created_at->diffForHumans()}}</span>
                                     </div>

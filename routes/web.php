@@ -33,7 +33,7 @@ Route::get('/visa-services', [HomeController::class, 'visa_services'])->name('vi
 Route::get('/franchise', [HomeController::class, 'franchise_services'])->name('franchise');
 Route::get('/blogs', [HomeController::class, 'blogs'])->name('blog');
 Route::get('/blogs-by-category/{id}', [HomeController::class, 'blogs_by_category'])->name('blog_by_category');
-Route::get('/blog-single/{id}', [HomeController::class, 'blog_single'])->name('blog-single');
+Route::get('/blog-single/{slug}', [HomeController::class, 'blog_single'])->name('blog-single');
 Route::get('/team', [HomeController::class, 'team'])->name('team');
 Route::get('/about-us', [HomeController::class, 'about'])->name('about');
 Route::post('/message', [MessageController::class, 'store'])->name('message.store');

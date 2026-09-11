@@ -100,12 +100,16 @@ class BlogController extends Controller
         // Validate the incoming request data
         $request->validate([
             'title' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255',
             'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'content' => 'required|string',
             'category_id' => 'required|integer|exists:blog_categories,id',
-            
+
         ]);
-    
+
+        $slugSource = $request->filled('slug') ? $request->slug : $request->title;
+        $slug = Blog::generateUniqueSlug($slugSource);
+
         // Handle the image upload
         if ($request->hasFile('banner')) {
             $banner = $request->file('banner');
@@ -119,6 +123,7 @@ class BlogController extends Controller
         // Create a new blog post
         $blog = Blog::create([
             'title' => $request->title,
+            'slug' => $slug,
             'banner' => $bannerUrl, // Save the absolute path in the banner field
             'content' => $request->content,
             'category_id' => $request->category_id,
@@ -149,14 +154,15 @@ class BlogController extends Controller
         // Validate the incoming request data
         $request->validate([
             'title' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255',
             'banner' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:10240', // Image is optional, but still validate if present
             'content' => 'required|string',
             'category_id' => 'required|integer|exists:blog_categories,id',
         ]);
-    
+
         // Find the blog post by ID
         $blog = Blog::findOrFail($id);
-    
+
         // Handle the image upload if a new banner is uploaded
         if ($request->hasFile('banner')) {
             $banner = $request->file('banner');
@@ -166,9 +172,13 @@ class BlogController extends Controller
         } else {
             $bannerUrl = $blog->banner; // Keep the existing banner if no new image is uploaded
         }
-    
+
+        $slugSource = $request->filled('slug') ? $request->slug : $blog->title;
+        $slug = Blog::generateUniqueSlug($slugSource, $blog->id);
+
         // Update the blog post fields
         $blog->title = $request->title;
+        $blog->slug = $slug;
         $blog->banner = $bannerUrl;
         $blog->content = $request->content;
         $blog->category_id = $request->category_id;

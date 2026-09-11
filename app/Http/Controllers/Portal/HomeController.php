@@ -103,19 +103,32 @@ class HomeController extends Controller
         return view('front.blog',compact('blogs','categories','recentBlogs'));
     }
 
-    public function blog_single($id){
-        $blog = Blog::findOrFail($id);
-        $prevBlog = Blog::where('id', '<', $id)->orderBy('id', 'desc')->first();
-        $nextBlog = Blog::where('id', '>', $id)->orderBy('id', 'asc')->first();
+    public function blog_single($slug){
+        $blog = Blog::where('slug', $slug)->first();
+
+        // Support old numeric /blog-single/{id} links that were shared before slugs existed
+        if (!$blog && ctype_digit((string) $slug)) {
+            $legacyBlog = Blog::find($slug);
+            if ($legacyBlog) {
+                return redirect()->route('blog-single', $legacyBlog->slug, 301);
+            }
+        }
+
+        if (!$blog) {
+            abort(404);
+        }
+
+        $prevBlog = Blog::where('id', '<', $blog->id)->orderBy('id', 'desc')->first();
+        $nextBlog = Blog::where('id', '>', $blog->id)->orderBy('id', 'asc')->first();
         $categories = BlogCategories::all();
 
 
 
-        $recentBlogs = Blog::where('id', '!=', $id)
+        $recentBlogs = Blog::where('id', '!=', $blog->id)
                         ->orderBy('created_at', 'desc')
                         ->limit(5)
                         ->get();
-        
+
         return view('front.blog-single', compact('blog', 'categories', 'prevBlog', 'nextBlog','recentBlogs'));
     }
 

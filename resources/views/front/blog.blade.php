@@ -9,13 +9,13 @@
                 <div class="w3breadcrumb-gids">
                     <div class="w3breadcrumb-left text-left">
                         <h2 class="inner-w3-title mt-sm-5 mt-4">
-                            Blog </h2>
+                            Articles </h2>
 
                     </div>
                     <div class="w3breadcrumb-right">
                         <ul class="breadcrumbs-custom-path">
                             <li><a href="{{route('home')}}">Home</a></li>
-                            <li class="active"><span class="fas fa-angle-double-right mx-2"></span> Blog </li>
+                            <li class="active"><span class="fas fa-angle-double-right mx-2"></span> Articles </li>
                         </ul>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                                
                             </div>
                             <div class="btom-cont">
-                                <h5 class="card-title"><a href="{{route('blog-single',$blog->id)}}">{{$blog->title}} </a></h5>
+                                <h5 class="card-title"><a href="{{route('blog-single',$blog->slug)}}">{{$blog->title}} </a></h5>
                                 <ul class="admin-post">
                                     <li>
                                     <a ><span class="fas fa-user"></span>{{ $blog->user->name }}</a> 
@@ -61,7 +61,7 @@
                                 @endphp
                                 <p>{!! $firstTwoWords !!}</p>
                                 
-                                <a href="{{route('blog-single',$blog->id)}}" class="btn btn-style btn-primary mt-4">Read More <i class="fas fa-angle-double-right ms-2"></i></a>
+                                <a href="{{route('blog-single',$blog->slug)}}" class="btn btn-style btn-primary mt-4">Read More <i class="fas fa-angle-double-right ms-2"></i></a>
 
                             </div>
                         </div>
@@ -134,13 +134,13 @@
         @foreach($recentBlogs as $recent)
         <div class="posts-grid-inner">
             <div class="posts-grid-left ps-0">
-                <a href="{{route('blog-single',$recent->id)}}">
+                <a href="{{route('blog-single',$recent->slug)}}">
                     <img src="{{$recent->banner}}" alt=" " class="img-fluid">
                 </a>
             </div>
             <div class="posts-grid-right">
                 <h4>
-                    <a href="{{route('blog-single',$recent->id)}}" class="text-bl">{{$recent->title}}</a>
+                    <a href="{{route('blog-single',$recent->slug)}}" class="text-bl">{{$recent->title}}</a>
                 </h4>
                 <span class="price">{{$recent->created_at->diffForHumans()}}</span>
             </div>
